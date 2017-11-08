@@ -1,0 +1,24 @@
+{
+  "name": "nodeoraclework",
+  "version": "1.0.0",
+  "description": "Project to test Node.js Oracle Connections",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Srini J",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^2.5.0",
+    "cheerio": "^1.0.0-rc.2",
+    "chokidar": "^1.7.0",
+    "ejs": "^2.5.7",
+    "express": "^4.16.2",
+    "morgan": "^1.9.0",
+    "oracledb": "^1.13.1",
+    "request": "^2.83.0",
+    "save": "^2.3.1",
+    "seneca": "^3.4.3",
+    "throng": "^4.0.0"
+  }
+}

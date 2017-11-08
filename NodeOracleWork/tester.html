@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<body>
+<button id="my-button">Click me!</button>
+<script>
+    function onLoad() { // "onLoad" is the parent function.
+        var button = document.getElementById('my-button');
+        function onClick() { // "onClick" is the child function (closure).
+            alert("I am here within On click")
+            button.parentNode.removeChild(button); // "button" referes to the enslosing scope.
+        }
+        // "onClick" can be invoked after "onLoad" finishes but the reference to "button"
+        // will still be valid thanks to closure.
+        button.addEventListener('click', onClick);
+    }
+    window.addEventListener('load', onLoad);
+</script>
+</body>
+</html>

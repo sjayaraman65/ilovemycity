@@ -1,0 +1,14 @@
+Node.js
+=======
+October 2017 - Work schedule
+
+Synchronous
+-----------
+1. Call Oracle Stored Procedure from Node.js
+
+ASynchronous(parallel)
+----------------------
+
+2. Call Oracle Stored Procedure from Node.js
+3. Call Oracle Stored Procedure from Node.js with Promise
+4. Multi-task in Parallel (multiple Call Oracle Stored Procedure from Node.js with Promise)

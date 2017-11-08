@@ -1,0 +1,1 @@
+console.log(JSON.parse('{"result": "SUCCESS","error":"Serious"}', (key, value) => {return value}));
