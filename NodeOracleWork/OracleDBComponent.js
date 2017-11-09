@@ -2,7 +2,8 @@
 var oracledb       = require('oracledb');
 var config         = require('./dbConfig.js');
 // variables   get_clob3 to be replaced with Pl/sql gateway
-var inSqlStatement = `begin get_clob3(:reqNo,:procName,:requestMsg,:resultStatus,:responseMsg); end;`;
+var inSqlStatement = //`begin get_clob3(:reqNo,:procName,:requestMsg,:resultStatus,:responseMsg); end;`;
+                    "BEGIN  p_db_proc_gateway(:ReqNo,:procName,:RequestMsg,:resultStatus,:ResponseMsg) ; END;"
 
 //Paramaets to be passed into this module
 var inParams       = {};
@@ -14,7 +15,7 @@ function dbConnection (config, callback) {
                 return false;
             }
             console.log('Successfull Connection');
-            callback(conn,processResult);
+            callback(conn,getResult);
         }
     );
 }
@@ -34,7 +35,10 @@ function dbExecute(conn,callback)
 
             console.log('ResultMsg1'+resultStatus);
 
-            getResult(clobStream,conn).then(function(result) {console.log('Final Result '+result)});
+            var clobStream =  result.outBinds.resp;
+            getResult(clobStream,conn)
+                .then(function(result) {console.log('Final Result '+result)})
+                .catch(function(result) {console.log('Catch Error '+result)});
         }
     );
 }
@@ -54,7 +58,7 @@ function getResult(inClobStream , conn)
         resolve(clobContent);
     });
 
-    inClobStream.on('close', function() {
+    inClobStream.on('close', function() { console.log('Getresult.close()');
         conn.close(function(err) {
             if (err) {
                 reject(err);
@@ -62,7 +66,7 @@ function getResult(inClobStream , conn)
         });
     });
 
-    inClobStream.on('error', function(err) {
+    inClobStream.on('error', function(err) { console.log('Getresult.error()');
         reject(err);
     });
 });
