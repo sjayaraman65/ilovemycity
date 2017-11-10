@@ -2,7 +2,7 @@
 var oracledb       = require('oracledb');
 var DbConfig         = require('./dbConfig.js');
 // variables   get_clob3 to be replaced with Pl/sql gateway
-var inSqlStatement = "BEGIN  p_db_proc_gateway(:ReqNo,:procName,:RequestMsg,:resultStatus,:ResponseMsg) ; END;"
+var inSqlStatement = "BEGIN  p_db_proc_gateway(:ReqNo,:crudOperation,:procName,:RequestMsg,:resultStatus,:ResponseMsg) ; END;"
 //`begin get_clob3(:reqNo,:procName,:requestMsg,:resultStatus,:responseMsg); end;`;
 
 //Paramaets to be passed into this module
@@ -66,9 +66,9 @@ function getResult(inClobStream , conn)
 });
 }
 
-function main(lReqNo,lProcName,lRequestMsg ) {
+function main(lReqNo,lCrudOperation,lProcName,lRequestMsg ) {
    inParams       =
-         {reqNo:         lReqNo
+         {reqNo:         lReqNo,crudOperation :  lCrudOperation
          ,procName:      lProcName
          ,requestMsg:    lRequestMsg
          ,resultStatus:  {dir: oracledb.BIND_OUT,type: oracledb.DB_CHAR}
@@ -78,4 +78,4 @@ function main(lReqNo,lProcName,lRequestMsg ) {
     dbConnection(DbConfig, dbExecute);
 }
 
-main('1212123','plsqlgateway','asdasdasdasdasdasd');
+main('1212123','get','plsqlgateway','asdasdasdasdasdasd');

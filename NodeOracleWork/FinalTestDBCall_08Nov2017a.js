@@ -1,15 +1,11 @@
+//  OracleComponent.js
 var oracledb       = require('oracledb');
 var config         = require('./dbConfig.js');
 // variables   get_clob3 to be replaced with Pl/sql gateway
 var inSqlStatement = `begin get_clob3(:reqNo,:procName,:requestMsg,:resultStatus,:responseMsg); end;`;
 
 //Paramaets to be passed into this module
-var inParams       = {reqNo:         ''
-                     ,procName:      ''
-                     ,requestMsg:    ''
-                     ,resultStatus:  {dir: oracledb.BIND_OUT,type: oracledb.DB_CHAR}
-                     ,responseMsg:   {dir: oracledb.BIND_OUT,type: oracledb.CLOB}
-                    };
+var inParams       = {};
 
 function dbConnection (config, callback) {
     oracledb.getConnection(config, function (err, conn) {
@@ -75,7 +71,7 @@ function processResult(inClobStream , conn)
 }
 
 function main(lReqNo,lProcName,lRequestMsg ) {
-    inParams       =
+   inParams       =
          {reqNo:         lReqNo
          ,procName:      lProcName
          ,requestMsg:    lRequestMsg
