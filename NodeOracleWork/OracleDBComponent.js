@@ -1,6 +1,6 @@
 //  OracleDBComponent..js
 var oracledb       = require('oracledb');
-var config         = require('./dbConfig.js');
+var DbConfig         = require('./dbConfig.js');
 // variables   get_clob3 to be replaced with Pl/sql gateway
 var inSqlStatement = "BEGIN  p_db_proc_gateway(:ReqNo,:procName,:RequestMsg,:resultStatus,:ResponseMsg) ; END;"
 //`begin get_clob3(:reqNo,:procName,:requestMsg,:resultStatus,:responseMsg); end;`;
@@ -8,8 +8,8 @@ var inSqlStatement = "BEGIN  p_db_proc_gateway(:ReqNo,:procName,:RequestMsg,:res
 //Paramaets to be passed into this module
 var inParams       = {};
 
-function dbConnection (config, callback) {
-    oracledb.getConnection(config, function (err, conn) {
+function dbConnection (DbConfig, callback) {
+    oracledb.getConnection(DbConfig, function (err, conn) {
             if (err) {
                 console.trace('Error in dbConnection ' + err);
                 return false;
@@ -29,13 +29,9 @@ function dbExecute(conn,callback)
                 console.trace('Error in dbExecute ' + err);
                 return false;
             }
-            //callback(result.outBinds.clob,conn).then(console.log('Final Result '||clobContent))
-
             var resultStatus =  JSON.parse(JSON.stringify(result.outBinds.resultStatus));
-
             console.log('ResultMsg1'+resultStatus);
-
-            getResult(result.outBinds.responseMsg,conn)
+                callback(result.outBinds.responseMsg,conn)
                 .then(function(result) {console.log('Final Result '+result)})
                 .catch(function(result) {console.log('Catch Error '+result)});
         }
@@ -45,7 +41,6 @@ function dbExecute(conn,callback)
 function getResult(inClobStream , conn)
 { return new Promise(function (resolve,reject)
 {
-
     var clobContent = '';
 
     inClobStream.on('data', function(chunk) {
@@ -80,7 +75,7 @@ function main(lReqNo,lProcName,lRequestMsg ) {
          ,responseMsg:   {dir: oracledb.BIND_OUT,type: oracledb.CLOB}
     };
     console.log('Request no '+inParams.reqNo);
-    dbConnection(config, dbExecute);
+    dbConnection(DbConfig, dbExecute);
 }
 
 main('1212123','plsqlgateway','asdasdasdasdasdasd');
