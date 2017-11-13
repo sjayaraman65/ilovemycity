@@ -1,9 +1,6 @@
 //  OracleDBComponent..js
 var oracledb       = require('oracledb');
 var DbConfig         = require('./dbConfig.js');
-// variables   get_clob3 to be replaced with Pl/sql gateway
-var inSqlStatement = "BEGIN  p_db_proc_gateway(:ReqNo,:crudOperation,:procName,:RequestMsg,:resultStatus,:ResponseMsg) ; END;"
-//`begin get_clob3(:reqNo,:procName,:requestMsg,:resultStatus,:responseMsg); end;`;
 
 //Paramaets to be passed into this module
 var inParams       = {};
@@ -22,14 +19,17 @@ function dbConnection (DbConfig, callback) {
 
 function dbExecute(conn,callback)
 {
-        conn.execute( inSqlStatement
+    inSqlStatement = "BEGIN  p_db_proc_gateway(:ReqNo,:crudOperation,:procName,:RequestMsg,:resultStatus,:ResponseMsg) ; END;";
+                   //`begin get_clob3(:reqNo,:procName,:requestMsg,:resultStatus,:responseMsg); end;`;
+
+    conn.execute( inSqlStatement
         , inParams
         ,function(err, result) {
             if (err) {
                 console.trace('Error in dbExecute ' + err);
                 return false;
             }
-            var resultStatus =  JSON.parse(JSON.stringify(result.outBinds.resultStatus));
+            resultStatus =  JSON.parse(JSON.stringify(result.outBinds.resultStatus));
             console.log('ResultMsg1'+resultStatus);
                 callback(result.outBinds.responseMsg,conn)
                 .then(function(result) {console.log('Final Result '+result)})
@@ -41,7 +41,7 @@ function dbExecute(conn,callback)
 function getResult(inClobStream , conn)
 { return new Promise(function (resolve,reject)
 {
-    var clobContent = '';
+    clobContent = '';
 
     inClobStream.on('data', function(chunk) {
         clobContent += chunk;
@@ -78,4 +78,4 @@ function main(lReqNo,lCrudOperation,lProcName,lRequestMsg ) {
     dbConnection(DbConfig, dbExecute);
 }
 
-main('1212123','get','plsqlgateway','asdasdasdasdasdasd');
+main('1999993','get','get_Clob','asdasdasdasdasdasd');
